@@ -68,7 +68,7 @@ get_wifi() {
 }
 
 get_home_filelist() {
-	find . | grep -v .git
+	find . | grep -v .git > $INFO_DIR/homedir_list.txt
 }
 
 # Add/Remove functions
