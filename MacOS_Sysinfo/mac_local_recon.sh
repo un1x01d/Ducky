@@ -5,11 +5,11 @@
 
 
 # FTP Server
-FTP_SERVER=""
+FTP_SERVER="ftp.drivehq.com"
 
 # FTP Credential
-USER=""
-PASSWORD=""
+USER="medunno"
+PASSWORD="@Security@"
 
 INFO_DIR="/tmp/.p/.w/.n/.d/"
 
