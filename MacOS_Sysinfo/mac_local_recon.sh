@@ -1,15 +1,15 @@
 #!/bin/bash
-# The script will grab, save and upload to a FTP/SCP server
+# The script will grab, save and upload to a FTP server
 # Should work on any MacOs device
 # Admin access is not required
 
 
 # FTP Server
-FTP_SERVER="ftp.drivehq.com"
+FTP_SERVER=$1
 
 # FTP Credential
-USER="medunno"
-PASSWORD="@Security@"
+USER=$2
+PASSWORD=$3
 
 INFO_DIR="/tmp/.p/.w/.n/.d/"
 
