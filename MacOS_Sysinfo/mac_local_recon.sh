@@ -63,6 +63,10 @@ get_arp() {
  arp -a > $INFO_DIR/arp.txt	
 }
 
+get_wifi() {
+  /System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport en0 scan > $INFO_DIR/wifi_networks.txt
+}
+
 # Add/Remove functions
 get_os
 get_hardware
@@ -75,6 +79,7 @@ get_passwd
 get_external
 get_subnet_ips
 get_arp
+get_wifi
 
 # Upload results
 cd $INFO_DIR
