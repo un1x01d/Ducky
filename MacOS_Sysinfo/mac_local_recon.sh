@@ -23,7 +23,7 @@ get_hardware() {
 	system_profiler SPHardwareDataType > $INFO_DIR/hardware.txt
 }
 
-get_filesystem() {
+get_mounts() {
   mount > $INFO_DIR/mounts.txt
 }
 
@@ -70,6 +70,7 @@ get_wifi() {
 # Add/Remove functions
 get_os
 get_hardware
+get_mounts
 get_printer
 get_network
 get_firewall
