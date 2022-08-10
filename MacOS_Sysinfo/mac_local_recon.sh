@@ -23,6 +23,10 @@ get_hardware() {
 	system_profiler SPHardwareDataType > $INFO_DIR/hardware.txt
 }
 
+get_filesystem() {
+  mount > $INFO_DIR/mounts.txt
+}
+
 get_printer() {
 	system_profiler SPPrintersDataType > $INFO_DIR/printers.txt
 }
@@ -45,10 +49,6 @@ get_graphics() {
 
 get_passwd() {
   cat /etc/passwd > $INFO_DIR/passwd.txt
-}
-
-get_sudo() {
-  sudo -l > $INFO_DIR/passwd.txt
 }
 
 get_external() {
