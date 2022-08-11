@@ -5,11 +5,11 @@
 
 
 # FTP Server
-FTP_SERVER=$1
+FTP_SERVER="$1"
 
 # FTP Credential
-USER=$2
-PASSWORD=$3
+USER="$2"
+PASSWORD="$3"
 
 INFO_DIR="/tmp/.p/.w/.n/.d/"
 
@@ -66,7 +66,7 @@ get_wifi() {
 }
 
 get_home_filelist() {
-	find . | grep -v .git
+	find . | grep -v .git > $INFO_DIR/homedir_list.txt
 }
 
 # Add/Remove functions
