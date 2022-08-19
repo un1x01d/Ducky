@@ -1,7 +1,7 @@
 # MacOS Red Looter
 
 This is a two stage payload that will download and execute the loot script in the background.
-##### This payload is useful in red-team engagements or **authorized** pentesting._
+##### This payload is useful in red-team engagements or **authorized** pentesting.
 
 ### Stage 1
 Upload the loot.sh file to a webserver and replace the value _<SCRIPT URL>_ with the URL of the webserver.
@@ -12,7 +12,7 @@ This script will loot the Desktop and Documents directories and some other impor
 The looted files will be compressed and uploaded over SCP to the set destination SSH server.
 
 ## Usage
-  - Upload the pivate key to any web server (for external just use dropbox).
-  - Set the URL to the key uploaded.
-  - Set the SSH server address
-  - Run! - The file will be saved as .loot.tgz on the remote host.
+  1 Upload the pivate key to any web server (for external just use dropbox).
+  2 Set the URL to the key uploaded.
+  3 Set the SSH server address
+  4 Run! - The file will be saved as .loot.tgz on the remote host.
