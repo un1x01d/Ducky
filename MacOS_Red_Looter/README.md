@@ -1,5 +1,5 @@
 # MacOS Red Looter
-This script will loot the Desktop and Documents directories and some other important files.  
+This payload will loot the Desktop and Documents directories and some other important files.  
 The looted files will be compressed and uploaded over SCP to the set destination SSH server.
 
 **This is a two stage payload that will download and execute the loot script in the background.**
@@ -8,7 +8,7 @@ The looted files will be compressed and uploaded over SCP to the set destination
 ### Stage 1  - Configure `loot.sh`
 This script will loot the Desktop and Documents directories and some other important files.  
 The looted files will be compressed and uploaded over SCP to the set destination SSH server.
-  - Generate temporary SSH key or use existing.
+  - Generate **temporary** SSH key or use existing.
   - Upload the private key to any web server (for external work, use dropbox).
   - Set the values of the variables
 ```
