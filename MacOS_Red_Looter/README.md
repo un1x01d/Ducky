@@ -11,7 +11,7 @@ _If you use the URl to the raw file on github the first stage will take longer s
 This script will loot the Desktop and Documents directories and some other important files.
 The looted files will be compressed and uploaded over SCP to the set destination SSH server.
 
-##Usage
+## Usage
   - Upload the pivate key to any web server (for external just use dropbox).
   - Set the URL to the key uploaded.
   - Set the SSH server address
