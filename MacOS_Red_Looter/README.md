@@ -4,7 +4,7 @@ This is a two stage payload that will download and execute the loot script in th
 ##### This payload is useful in red-team engagements or **authorized** pentesting._
 
 ### Stage 1
-Upload the loot.sh file to a webserver and replace the value _<SCRIPT URL>_ with the URL of the webserver.
+Upload the `loot.sh` file to a webserver and replace the value _<SCRIPT URL>_ with the URL of the webserver.
   _If you use the URl to the raw file on github the first stage will take longer since it's long path which makes it more noticable._
 
 ### Stage 2
