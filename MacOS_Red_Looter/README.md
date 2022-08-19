@@ -17,6 +17,6 @@ The looted files will be compressed and uploaded over SCP to the set destination
 
 ### Stage 2 - Upload `loot.sh` 
 Upload the `loot.sh` file to a webserver and replace the value _<SCRIPT URL>_ with the URL of the webserver in `payload.txt`.
-  _If you use the URl to the raw file on github the first stage will take longer since it's long path which makes it more noticable._
+  _If you use the URl to the raw file on github the first stage will take longer since it's a long URL which makes it more noticable._
 
 ##### Originally tested with OM.G Cable but should work for all the duckyscript based devices
