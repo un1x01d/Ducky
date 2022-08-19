@@ -7,11 +7,9 @@ This is a two stage payload that will download and execute the loot script in th
 Upload the `loot.sh` file to a webserver and replace the value _<SCRIPT URL>_ with the URL of the webserver.
   _If you use the URl to the raw file on github the first stage will take longer since it's long path which makes it more noticable._
 
-### Stage 2
+### Stage 2 `loot.sh`
 This script will loot the Desktop and Documents directories and some other important files.
-  The looted files will be compressed and uploaded over SCP to the set destination SSH server.
-
-## Usage
+The looted files will be compressed and uploaded over SCP to the set destination SSH server.
   - Upload the pivate key to any web server (for external just use dropbox).
   - Set the URL to the key uploaded.
   - Set the SSH server address
