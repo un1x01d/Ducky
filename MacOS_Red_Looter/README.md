@@ -5,7 +5,7 @@ The looted files will be compressed and uploaded over SCP to the set destination
 
 #### This is a two stage payload that will download and execute the loot script in the background.
 
-#### Usage:
+## Usage:
 
 
 ### Configure `loot.sh`
