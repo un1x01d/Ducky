@@ -3,7 +3,7 @@
 Collects important recon information from the victim. Includes: OS, Hardware, Network, Filesystem, Wifi etc..  
 The results will be uploaded to a FTP server.
 
-### Usage
+## Usage
 **Replace the parameters in `payload-ftp.txt`**  
 ``` "<URL TO SCRIPT> <FTP SERVER>  <USERNAME> <PASSWORD> ``` 
 
