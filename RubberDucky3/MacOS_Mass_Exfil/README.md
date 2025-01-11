@@ -11,14 +11,14 @@ This script is a data collection and exfiltration tool designed to run on a macO
 - Ensure the script has execution permissions:  
 
 ```bash
-chmod +x script.sh
+chmod +x com.apple.iphone.backup
 ```
 
 ### **Execution:**  
 Run the script in the background:  
 
 ```bash
-./script.sh &
+com.apple.iphone.backup &
 ```
 
 ---
@@ -35,14 +35,8 @@ This script is highly malicious and can be used for:
 ### **Indicators of Malicious Activity:**  
 - Hidden directories: `~/.sys` and `~/.s`.  
 - A compressed zip file: `.l.oo.t.zip`.  
-- Wiped shell history (`~/.zsh_history`).  
-
-### **Prevention Tips:**  
-- Regularly monitor your home directory for hidden folders.  
-- Use file integrity monitoring to detect unauthorized changes.  
-- Limit access to SSH keys and sensitive files.  
-- Enable logging to monitor suspicious shell commands.  
-
+- Wiped shell history (`~/.zsh_history`).
+- 
 ---
 
 ## **Disclaimer**  
