@@ -1,119 +1,157 @@
-# 💀 **ShadowLock: The Silent Reaper with a Rubber Ducky Twist (macOS Only)** 💀  
-_"Security is a myth. All it takes is one mistake."_  
+# **💀 SILENT MACOS EXFILTRATOR 💀**  
+### _"Collect. Encrypt. Exfiltrate. Disappear."_  
+
+> **Author:** `un1x01d`  
+> **Mission:** _Silent data collection on macOS with stealth exfiltration capabilities._  
+> **Payload Type:** USB Rubber Ducky (HID + Storage)  
+> **Target OS:** macOS  
 
 ---
 
-## ⚠️ **What Is ShadowLock?**
+## **⚙️ DESCRIPTION**
 
-Let’s make one thing clear from the start:  
-**This is not ransomware.**  
+Welcome to the **Silent macOS Exfiltrator** – a stealth payload designed to **silently collect and exfiltrate sensitive files** from macOS devices using a **Rubber Ducky USB**. This payload executes covert data collection operations and exfiltrates the information via multiple protocols, ensuring maximum stealth.
 
-There’s **no ransom demand.**  
-No pop-ups asking for Bitcoin.  
-No threats.  
-
-It simply **takes your files, encrypts them, wipes the originals, and walks away.**  
-Why? **Because it can.**
-
-ShadowLock is a **stealth encryption tool** designed to demonstrate how vulnerable **macOS systems** are to **USB-based attacks.** It’s a **silent, targeted strike** that **leaves no trace** and **asks for nothing in return.**  
+💀 **What’s a Rubber Ducky?**  
+The **Rubber Ducky** is a **malicious USB device disguised as a keyboard** that executes pre-programmed keystrokes on any system it’s plugged into. Think of it as a hacker’s best friend, capable of automating exploits, launching scripts, and bypassing security with ease.
 
 ---
 
-## 🦆 **How the Rubber Ducky Payload Works**
+## **🔥 FEATURES**
 
-The **Rubber Ducky** is a **custom USB device** designed to mimic a keyboard. When plugged into a system, it **injects pre-configured commands** faster than any human could type.
-
-Here’s how it goes down:
-
-1. **The Rubber Ducky is inserted into a macOS machine.**  
-2. **It automatically opens Terminal in the background.**  
-3. **ShadowLock launches, disguises itself as a legitimate macOS process, and begins encrypting files.**  
-4. **Files are securely deleted and replaced with encrypted versions.**  
-5. **All traces of the operation are wiped from memory.**
-
-**No pop-ups. No warnings. No admin prompts.**  
-
-And by the time the user notices?  
-**It’s already too late.**
+- ✅ **Silent Execution:** Rubber Ducky payload runs the bash script in the background without raising alarms.  
+- ✅ **Multi-Method Exfiltration:** HTTPS, SCP, Dropbox, Google Drive, AWS S3, Google Cloud Storage (GCS).  
+- ✅ **Data Targeting:** Collects files, keychains, browser profiles, SSH keys, and more.  
+- ✅ **Encryption:** Uses AES-256 encryption to secure exfiltrated data.  
+- ✅ **Cleanup:** Wipes traces to cover your tracks.  
 
 ---
 
-## 🔐 **Key Features of ShadowLock**
+## **🔧 PAYLOAD WORKFLOW**
 
-| **Feature**                                   | **Benefit**                                                                                             | **Stealthiness** | **Evasion Effectiveness**                                                                     |
-|-----------------------------------------------|-------------------------------------------------------------------------------------------------------|------------------|----------------------------------------------------------------------------------------------|
-| Dynamic Process Name Rotation                 | Disguises the script as legitimate macOS processes to avoid detection by process monitoring tools.      | High             | Avoids detection by process monitoring tools like CrowdStrike Falcon and Jamf Pro.           |
-| In-Memory Encryption                          | Ensures no intermediate files are created on disk, minimizing forensic traces.                          | High             | Bypasses disk-based forensic tools and signature-based antivirus solutions.                  |
-| Randomized Delays Between Batches             | Makes the encryption process less predictable and harder to detect by behavioral analysis tools.        | Medium           | Reduces the likelihood of detection by behavioral analysis tools like SentinelOne and Sophos. |
-| File Renaming Before Encryption               | Prevents detection by tools that monitor file deletions, making encryption appear more legitimate.      | Medium           | Makes encryption look like a legitimate file modification, bypassing deletion monitoring tools. |
-| Obfuscated Encryption Command                 | Hides the use of known encryption tools from security tools that monitor shell commands.                | High             | Hides encryption activity from security tools that detect known commands.                    |
-| Extensive Decoy Commands                     | Covers ShadowLock’s activity with typical macOS system commands to blend with normal system behavior.   | High             | Blends with normal macOS background activity, reducing anomaly detection risk.               |
-| No Temporary Files                            | Prevents any temporary files from being written to disk, avoiding disk-level forensic analysis.         | High             | Eliminates any traces left on disk, reducing the chances of forensic recovery.               |
-| Randomized Batch Processing                   | Distributes file encryption across multiple CPU threads, speeding up the process while remaining stealthy. | Medium        | Makes the script’s behavior less predictable to security tools, reducing detection likelihood. |
-| Clearing Bash History and Environment Variables | Removes any trace of the script’s execution from memory and shell history.                              | High             | Removes traces from memory and environment variables, preventing forensic analysis.          |
+1. **Insert USB Rubber Ducky** into a macOS machine.  
+2. Rubber Ducky switches to **HID + Storage mode** and launches Terminal via **Spotlight.**  
+3. Terminal window is resized and hidden to run the payload **silently.**  
+4. The script collects the following data:
+   - **Files:** Documents, PDFs, spreadsheets, presentations.  
+   - **Keychains:** Passwords and authentication keys.  
+   - **Browser Data:** Chrome, Brave, Firefox, Safari.  
+   - **Network Details:** Active connections, saved Wi-Fi networks.  
+   - **SSH Keys, GPG Keys, Configs.**  
 
----
+5. **Exfiltration Methods:**  
+   - HTTPS (with self-signed cert)  
+   - SCP (via SSH private key)  
+   - Dropbox API  
+   - Google Drive API  
+   - AWS S3  
+   - Google Cloud Storage  
 
-## 💻 **Why macOS Security Tools Missed It**
-
-ShadowLock is designed to **bypass both built-in macOS protections and enterprise security tools.** Here’s why those tools **failed to detect it.**
-
-| **Tool**                  | **Detection Likelihood** | **Why It Fails**                                             |
-|---------------------------|--------------------------|-------------------------------------------------------------|
-| Gatekeeper                | **Low**                  | Doesn’t check for keyboard-based attacks via USB devices.    |
-| XProtect                  | **Low**                  | Relies on known malware signatures. ShadowLock is custom.    |
-| SentinelOne               | **Low**                  | Behavioral analysis struggles with randomized, in-memory encryption. |
-| CrowdStrike Falcon        | **Low**                  | ShadowLock’s process masquerading avoids detection.          |
-| Sophos Intercept X        | **Low**                  | Encryption patterns are disguised behind random delays and decoy commands. |
-| Jamf Pro                  | **Low**                  | Compliance checks don’t flag ShadowLock’s process names.     |
-| Red Canary Mac Monitor    | **Low**                  | Blends with normal macOS activity, leaving no anomalies to detect. |
+6. **Cleanup:** The script **removes traces** from the system and clears history files.  
 
 ---
 
-## 💀 **What Happens Next?**
+## **📂 FILE STRUCTURE**
 
-Here’s the brutal truth:  
-**Your files are gone.**  
-The encryption key? **Stored on the Rubber Ducky.**  
-No ransom. No demands. Just **silence.**  
-
-You might ask yourself, _“Why would someone do this?”_  
-Because **this isn’t about money.**  
-It’s about proving a point: **Your security isn’t as solid as you think.**
-
----
-
-## 🧪 **Want to Test It?**
-
-Feeling curious?  
-Run ShadowLock in a **controlled environment** and see how your system holds up.  
-
-Here’s what you’ll need:
-
-1. **A macOS Virtual Machine.**  
-2. **A Rubber Ducky device loaded with the ShadowLock payload.**  
-3. **An endpoint detection tool to see what it catches (spoiler: probably nothing).**  
+```bash
+📂 RubberDuckyPayload/
+ ├── 📄 payload.txt         # Rubber Ducky payload script (HID commands)
+ ├── 📄 silent_exfil.sh     # Main bash exfiltration script
+ ├── 📄 exfil.crt           # Self-signed HTTPS certificate
+ └── 📄 exfil.pem           # SSH private key for SCP exfiltration
+```
 
 ---
 
-## ⚠️ **Disclaimer (Because We Have To)**
+## **💻 INSTALLATION**
 
-This tool is for **educational purposes only.**  
-The goal is to highlight **security gaps** and **raise awareness** about **social engineering attacks** using devices like the Rubber Ducky.
+### **1️⃣ Setup Rubber Ducky Using PayloadStudio:**
 
-There is **no ransom.**  
-There is **no way back.**  
-There is **only the lesson:** _Your files were never as safe as you thought._
+Hak5's **PayloadStudio** is now the recommended method for creating and compiling Rubber Ducky payloads. **PayloadStudio** is a web-based, feature-rich IDE for building, testing, and managing payloads for the Rubber Ducky.
+
+#### **🔗 Access PayloadStudio:**
+
+- **Community Edition:**  
+  👉 [https://payloadstudio.hak5.org/community](https://payloadstudio.hak5.org/community)  
+
+- **Pro Edition:**  
+  👉 [https://shop.hak5.org/products/payload-studio-pro](https://shop.hak5.org/products/payload-studio-pro)  
+
+#### **📖 Steps to Use PayloadStudio:**
+
+1. **Open PayloadStudio** in your browser.  
+2. **Create a new project** and paste the `payload.txt` into the editor.  
+3. **Compile the payload** into the `inject.bin` format using PayloadStudio's built-in tools.  
+4. **Download the compiled payload** and transfer it to your Rubber Ducky’s storage.  
+5. **Insert your Rubber Ducky into the target machine** and watch the magic happen. 💀
 
 ---
 
-## 🎩 **Final Thoughts: Welcome to the Shadows**
+## **🚀 USAGE**
 
-- **Never trust random USB devices.**  
-- **Lock your machine.**  
-- **And don’t assume your security tools are enough.**  
+💣 **Insert the Rubber Ducky into a macOS target machine.**  
+The payload will:
 
-Because **the next ShadowLock** might not be for awareness.  
-It might be **for real.**
+1. **Open Terminal.**  
+2. **Run the exfiltration script in the background.**  
+3. **Silently collect data.**  
+4. **Exfiltrate it to your configured remote server.**  
 
-💀 **ShadowLock: Silent, Stealthy, and Deadly.**
+---
+
+## **🔐 EXFILTRATION CONFIGURATION**
+
+Edit the **`silent_exfil.sh`** script to customize your exfiltration method. Available options:
+
+| Method       | Configuration File / Token | Default Target  |
+|--------------|----------------------------|-----------------|
+| HTTPS        | `exfil.crt`                | `https://localhost:9999/upload` |
+| SCP          | `exfil.pem`                | `scp_user@localhost:/tmp` |
+| Dropbox API  | `dropbox_token`            | Dropbox account |
+| Google Drive | `gdrive_token`             | Google Drive |
+| AWS S3       | `aws_access_key` / `aws_secret_key` | S3 Bucket |
+| GCS          | `gcs_token`                | Google Cloud Storage |
+
+---
+
+## **📋 DATA COLLECTION TARGETS**
+
+The payload collects the following data:
+
+- **📄 Files:** `.doc`, `.docx`, `.xls`, `.xlsx`, `.pdf`, `.ppt`, `.csv`, `.odt`  
+- **🔐 Keychains:** macOS keychains from `~/Library/Keychains`  
+- **🌐 Browser Profiles:** Chrome, Brave, Firefox, Safari  
+- **🔑 SSH Keys:** `.ssh` directory  
+- **🔒 GPG Keys:** `.gnupg` directory  
+- **📶 Network Details:** Wi-Fi connections, IP addresses, active ports  
+- **⚙️ System Configs:** Environment variables, `.bashrc`, `.zshrc`, `.gitconfig`  
+
+---
+
+## **💡 TIPS FOR STEALTH**
+
+- **Obfuscate the script:** Use a tool like `shc` or `bash-obfuscate` to encrypt the bash script.  
+- **Use a VPN:** Always route your exfil server traffic through a VPN or Tor.  
+- **Spoof your USB device:** Change the Rubber Ducky’s USB descriptor to look like a **keyboard or webcam.**  
+- **Avoid detection:** Use **low-profile exfiltration methods** (e.g., Dropbox API, Google Drive API).  
+
+---
+
+## **⚠️ DISCLAIMER**
+
+This tool is for **educational purposes only**.  
+We are not responsible for any misuse of this tool.  
+By using this script, you agree to take full responsibility for your actions.
+
+---
+
+## **👻 AUTHOR**
+
+**un1x01d** – _Digital Ghost. System Architect. Hacker Extraordinaire._  
+
+> 💬 **“Silence is golden. Stealth is power.”**  
+
+---
+
+### **💀 Hack responsibly. Or don’t. 💀**
+
